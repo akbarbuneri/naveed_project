@@ -131,7 +131,7 @@ def search():
             item_id = product_ids[idx]
             # Convert distance to similarity for demonstration purposes. 
             # This is a simplistic conversion and may need adjustment based on your requirements.
-            similarity = 1 / (1 + distances[0][i])  # Example conversion, adjust as needed
+            similarity = 1 / (1 + distances[0][i])  
             results.append({"ItemID": item_id, "Similarity": similarity})
     
     return jsonify(results), 200
