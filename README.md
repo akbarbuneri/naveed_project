@@ -24,8 +24,8 @@ This Flask application allows for the uploading of product details via an Excel 
 1. **Clone the repository:**
 
     ```
-    git clone <repository-url>
-    cd <repository-folder>
+    git clone https://github.com/akbarbuneri/naveed_project
+    cd naveed_project
     ```
 
 2. **Install dependencies:**
@@ -33,8 +33,8 @@ This Flask application allows for the uploading of product details via an Excel 
     Create a virtual environment and activate it:
 
     ```
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    python -m venv nproj
+    source nproj/bin/activate  # On Windows use `nproj\Scripts\activate`
     ```
 
     Install required Python packages:
@@ -54,12 +54,16 @@ This Flask application allows for the uploading of product details via an Excel 
 4. **Run the application:**
 
     ```
-    flask run
+    flask run 
+    ```
+    Or if you want to debug
+    ```
+    flask --app app --debug run
     ```
 
 ## Usage
 
-### Adding a Product
+### 1. Adding a Product
 
 - **Endpoint**: `/add_product`
 - **Method**: POST
@@ -75,7 +79,7 @@ This Flask application allows for the uploading of product details via an Excel 
     }
     ```
 
-### Uploading an Excel File
+### 2. Uploading an Excel File
 
 - **Endpoint**: `/upload`
 - **Method**: POST
@@ -83,7 +87,7 @@ This Flask application allows for the uploading of product details via an Excel 
 
 The Excel file should have columns: `ItemID`, `ItemName`, `Brand`, `Price`, `Description`.
 
-### Searching for Similar Products
+### 3. Searching for Similar Products
 
 - **Endpoint**: `/search?query=<search-text>`
 - **Method**: GET
