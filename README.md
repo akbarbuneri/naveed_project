@@ -180,15 +180,27 @@ def dot_product_similarity(vec_a, vec_b):
 To incorporate different similarity measures into the search method of your Flask application, you might adjust the `/search` endpoint. Below is an example modification to use cosine similarity (assuming embeddings are normalized):
 
 ```python
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
 @app.route('/search', methods=['GET'])
 def search():
-    from sklearn.metrics.pairwise import cosine_similarity
     query = request.args.get('query', '')
-    query_embedding = generate_embedding(query).reshape(1, -1)  # Ensure correct shape for sklearn
-    # Assuming `all_embeddings` is an array of all item embeddings
-    similarities = cosine_similarity(query_embedding, all_embeddings)[0]
-    top_k_indices = np.argsort(similarities)[-10:][::-1]  # Indices of top 10 similar items
-    results = [{"ItemID": product_ids[i], "Similarity": similarities[i]} for i in top_k_indices]
+    query_embedding = generate_embedding(query).reshape(1, -1)  # Ensure query_embedding is correctly shaped
+    top_k = 10
+    
+    # Perform the search with FAISS
+    distances, indices = faiss_index.search(query_embedding, top_k)
+    
+    # Retrieve the actual vectors for the returned indices
+    closest_vectors = np.array([faiss_index.reconstruct(int(idx)) for idx in indices[0]])
+    
+    # Compute cosine similarity between the query and the closest vectors
+    cos_similarities = cosine_similarity(query_embedding, closest_vectors)[0]
+    
+    # Prepare and return the results
+    results = [{"ItemID": product_ids[int(indices[0][i])], "Similarity": cos_similarities[i]} for i in range(top_k)]
+    
     return jsonify(results), 200
 ```
 
